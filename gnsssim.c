@@ -137,21 +137,30 @@ void codegen(int *ca, int prn)
 		  5,   6,   7,   8,  17,  18, 139, 140, 141, 251,
 		252, 254, 255, 256, 257, 258, 469, 470, 471, 472,
 		473, 474, 509, 512, 513, 514, 515, 516, 859, 860,
-		861, 862,   0, 208, 711, 189,   0,   0, 663,   0};
+		861, 862, 339, 208, 711, 189, 263,   0, 663, 942,
+		173, 0, 30, 500, 935, 556};
 
 
-	int g1[CA_SEQ_LEN], g2[CA_SEQ_LEN];
+	int len = CA_SEQ_LEN/2;
+	int g1[len], g2[len];
 	int r1[N_DWRD_SBF], r2[N_DWRD_SBF];
 	int c1, c2;
 	int i,j;
+	int BOC = 0;
 
-	if (prn<1 || prn>40)
+	if (prn<1 || prn>46)
 		return;
 
+	if(prn == 40)
+		prn += 5;
+	if(prn == 36)
+		prn += 7;
+	if(prn>40)
+		BOC = 1;
 	for (i=0; i<N_DWRD_SBF; i++)
 		r1[i] = r2[i] = -1;
 
-	for (i=0; i<CA_SEQ_LEN; i++)
+	for (i=0; i<len; i++)
 	{
 		g1[i] = r1[9];
 		g2[i] = r2[9];
@@ -167,9 +176,11 @@ void codegen(int *ca, int prn)
 		r2[0] = c2;
 	}
 
-	for (i=0,j=CA_SEQ_LEN-delay[prn-1]; i<CA_SEQ_LEN; i++,j++)
-		ca[i] = (1-g1[i]*g2[j%CA_SEQ_LEN])/2;
-
+	for (i=0,j=len-delay[prn-1]; i<len; i++,j++)
+	{
+		ca[i*2] = ((1-g1[i]*g2[j%len])/2)^BOC;
+		ca[i*2+1] = (1-g1[i]*g2[j%len])/2;
+	}
 	//printf("%d %d\n",prn,delay[prn-1]);
 
 	return;

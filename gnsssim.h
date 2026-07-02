@@ -10,7 +10,7 @@
 #define MAX_CHAR (100)
 
 /*! \brief Maximum number of satellites in RINEX file */
-#define MAX_SAT (40)
+#define MAX_SAT (46)
 
 /*! \brief Maximum number of channels we simulate */
 #define MAX_CHAN (16)
@@ -33,7 +33,7 @@
 #define N_DWRD ((N_SBF+1)*N_DWRD_SBF) // Subframe word buffer size
 
 /*! \brief C/A code sequence length */
-#define CA_SEQ_LEN (1023)
+#define CA_SEQ_LEN (2046)
 
 #define SECONDS_IN_WEEK 604800.0
 #define SECONDS_IN_HALF_WEEK 302400.0
@@ -70,8 +70,8 @@
 /*! \brief GPS L1 Carrier frequency */
 #define CARR_FREQ (1575.42e6)
 /*! \brief C/A code frequency */
-#define CODE_FREQ (1.023e6)
-#define CARR_TO_CODE (1.0/1540.0)
+#define CODE_FREQ (CA_SEQ_LEN*1000.0)
+#define CARR_TO_CODE (CODE_FREQ/CARR_FREQ)
 
 // Sampling data format
 #define SC01 (1)
