@@ -1686,6 +1686,7 @@ int readqzssRinexNavAll(ephem_t eph[][MAX_SAT], ionoutc_t *ionoutc, const char *
 		tmp[19] = 0;
 		replaceExpDesignator(tmp, 19);
 		eph[ieph][sv].svhlth = (int)atof(tmp);
+		eph[ieph][sv].svhlth = 0;
 		if ((eph[ieph][sv].svhlth>0) && (eph[ieph][sv].svhlth<32))
 			eph[ieph][sv].svhlth += 32; // Set MSB to 1
 
