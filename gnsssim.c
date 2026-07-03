@@ -2165,7 +2165,7 @@ int allocateChannel(channel_t *chan, ephem_t *eph, ionoutc_t ionoutc[SIZE], gpst
 						codegen(chan[i].ca, chan[i].prn);
 
 						// Generate subframe
-						if(sv<32){
+						if(sv<=32){
 							eph2sbf(eph[sv], ionoutc, chan[i].sbf);
 						}else{
 							qzsseph2sbf(eph[sv], ionoutc, chan[i].sbf);
@@ -2175,7 +2175,7 @@ int allocateChannel(channel_t *chan, ephem_t *eph, ionoutc_t ionoutc[SIZE], gpst
 						generateNavMsg(grx, &chan[i], 1);
 
 						// Initialize pseudorange
-						if(sv<32){
+						if(sv<=32){
 							computeRange(&rho, eph[sv], ionoutc, grx, xyz, 0);
 						}else{
 							computeRange(&rho, eph[sv], ionoutc, grx, xyz, 1);
@@ -2185,7 +2185,7 @@ int allocateChannel(channel_t *chan, ephem_t *eph, ionoutc_t ionoutc[SIZE], gpst
 						// Initialize carrier phase
 						r_xyz = rho.range;
 
-						if(sv<32){
+						if(sv<=32){
 							computeRange(&rho, eph[sv], ionoutc, grx, xyz, 0);
 						}else{
 							computeRange(&rho, eph[sv], ionoutc, grx, xyz, 1);
@@ -2738,7 +2738,7 @@ int main(int argc, char *argv[])
 
 	for(i=0; i<MAX_CHAN; i++)
 	{
-		if (chan[i].prn>0&&chan[i].prn<32){
+		if (chan[i].prn>0&&chan[i].prn<=32){
 			fprintf(stderr, "%02d %6.1f %5.1f %11.1f %5.1f\n", chan[i].prn, 
 				chan[i].azel[0]*R2D, chan[i].azel[1]*R2D, chan[i].rho0.d, chan[i].rho0.iono_delay);
 		}else if(chan[i].prn>0&&chan[i].prn>32){
@@ -2774,7 +2774,7 @@ int main(int argc, char *argv[])
 				sv = chan[i].prn-1;
 
 				// Current pseudorange
-				if(sv<32){
+				if(sv<=32){
 					if (!staticLocationMode)
 						computeRange(&rho, eph[ieph][sv], ionoutc, grx, xyz[iumd],0);
 					else
@@ -2939,7 +2939,7 @@ int main(int argc, char *argv[])
 						for (i=0; i<MAX_CHAN; i++)
 						{
 							// Generate new subframes if allocated
-							if (chan[i].prn!=0&&sv<32){
+							if (chan[i].prn!=0&&sv<=32){
 								eph2sbf(eph[ieph][chan[i].prn-1], ionoutc, chan[i].sbf);
 							}else{
 								qzsseph2sbf(eph[ieph][chan[i].prn-1], ionoutc, chan[i].sbf);
@@ -2963,7 +2963,7 @@ int main(int argc, char *argv[])
 				fprintf(stderr, "\n");
 				for(i=0; i<MAX_CHAN; i++)
 				{			
-					if (chan[i].prn>0&&chan[i].prn<32){
+					if (chan[i].prn>0&&chan[i].prn<=32){
 						fprintf(stderr, "%02d %6.1f %5.1f %11.1f %5.1f\n", chan[i].prn, 
 						chan[i].azel[0]*R2D, chan[i].azel[1]*R2D, chan[i].rho0.d, chan[i].rho0.iono_delay);
 					}else if(chan[i].prn>0&&chan[i].prn>32){
