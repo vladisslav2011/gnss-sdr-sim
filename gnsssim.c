@@ -2874,10 +2874,12 @@ int main(int argc, char *argv[])
 			}
 
 			// Scaled by 2^7
-			i_acc = (i_acc+64)>>7;
-			q_acc = (q_acc+64)>>7;
-			i_acc = (i_acc+(rand()&0x0fff))>>4;
-			q_acc = (q_acc+(rand()&0x0fff))>>4;
+			i_acc = (i_acc)>>7;
+			q_acc = (q_acc)>>7;
+			int n_sc=0x07ff;
+			int s_shift=4;
+			i_acc = (i_acc+(rand()&n_sc)-(n_sc>>1)+(1<<(3+s_shift)))>>s_shift;
+			q_acc = (q_acc+(rand()&n_sc)-(n_sc>>1)+(1<<(3+s_shift)))>>s_shift;
 
 			// Store I/Q samples into buffer
 			iq_buff[isamp*2] = (short)i_acc;
