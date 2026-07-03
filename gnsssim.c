@@ -535,10 +535,7 @@ void eph2sbf(const ephem_t eph, const ionoutc_t ionoutc[SIZE], unsigned long sbf
 	unsigned long ura = 0UL;
 	unsigned long dataId = 1UL;
 	unsigned long sbf4_page25_svId = 63UL;
-	unsigned long sbf5_page25_svId = 51UL;
 
-	unsigned long wna;
-	unsigned long toa;
 
 	signed long alpha0,alpha1,alpha2,alpha3;
 	signed long beta0,beta1,beta2,beta3;
@@ -576,8 +573,6 @@ void eph2sbf(const ephem_t eph, const ionoutc_t ionoutc[SIZE], unsigned long sbf
 	svhlth = (unsigned long)(eph.svhlth);
 	codeL2 = (unsigned long)(eph.codeL2);
 
-	wna = (unsigned long)(eph.toe.week%256);
-	toa = (unsigned long)(eph.toe.sec/4096.0);
 
 	alpha0 = (signed long)round(ionoutc[0].alpha0/POW2_M30);
 	alpha1 = (signed long)round(ionoutc[0].alpha1/POW2_M27);
@@ -712,10 +707,7 @@ void qzsseph2sbf(const ephem_t eph, const ionoutc_t ionoutc[SIZE], unsigned long
 	unsigned long ura = 0UL;
 	unsigned long dataId = 1UL;
 	unsigned long sbf4_page25_svId = 63UL;
-	unsigned long sbf5_page25_svId = 51UL;
 
-	unsigned long wna;
-	unsigned long toa;
 
 	signed long alpha0,alpha1,alpha2,alpha3;
 	signed long beta0,beta1,beta2,beta3;
@@ -752,9 +744,6 @@ void qzsseph2sbf(const ephem_t eph, const ionoutc_t ionoutc[SIZE], unsigned long
 	tgd = (long)(eph.tgd/POW2_M31);
 	svhlth = (unsigned long)(eph.svhlth);
 	codeL2 = (unsigned long)(eph.codeL2);
-
-	wna = (unsigned long)(eph.toe.week%256);
-	toa = (unsigned long)(eph.toe.sec/4096.0);
 
 	alpha0 = (signed long)round(ionoutc[1].alpha0/POW2_M30);
 	alpha1 = (signed long)round(ionoutc[1].alpha1/POW2_M27);
@@ -2150,7 +2139,6 @@ int allocateChannel(channel_t *chan, ephem_t *eph, ionoutc_t ionoutc[SIZE], gpst
 	double azel[2];
 
 	range_t rho;
-	double ref[3]={0.0};
 	double r_ref,r_xyz;
 	double phase_ini;
 
@@ -2264,7 +2252,7 @@ int main(int argc, char *argv[])
 	FILE *fp;
 
 	int sv;
-	int neph,ieph;
+	int neph = 0,ieph = 0;
 	ephem_t eph[EPHEM_ARRAY_SIZE][MAX_SAT];
 	gpstime_t g0;
 	
@@ -2786,14 +2774,14 @@ int main(int argc, char *argv[])
 				// Current pseudorange
 				if(sv<32){
 					if (!staticLocationMode)
-						computeRange(&rho, eph[ieph][sv], &ionoutc, grx, xyz[iumd],0);
+						computeRange(&rho, eph[ieph][sv], ionoutc, grx, xyz[iumd],0);
 					else
-						computeRange(&rho, eph[ieph][sv], &ionoutc, grx, xyz[0],0);
+						computeRange(&rho, eph[ieph][sv], ionoutc, grx, xyz[0],0);
 				}else{
 					if (!staticLocationMode)
-						computeRange(&rho, eph[ieph][sv], &ionoutc, grx, xyz[iumd],1);
+						computeRange(&rho, eph[ieph][sv], ionoutc, grx, xyz[iumd],1);
 					else
-						computeRange(&rho, eph[ieph][sv], &ionoutc, grx, xyz[0],1);
+						computeRange(&rho, eph[ieph][sv], ionoutc, grx, xyz[0],1);
 				}
 
 				chan[i].azel[0] = rho.azel[0];
