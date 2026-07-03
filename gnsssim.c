@@ -2434,6 +2434,8 @@ int main(int argc, char *argv[])
 	}
 
 	
+	srand(time(NULL));
+
 	if (navfile[0]==0&&qzssfile[0]==0)
 	{
 		fprintf(stderr, "ERROR: GPS or QZSS ephemeris file is not specified.\n");
@@ -2874,6 +2876,8 @@ int main(int argc, char *argv[])
 			// Scaled by 2^7
 			i_acc = (i_acc+64)>>7;
 			q_acc = (q_acc+64)>>7;
+			i_acc = (i_acc+(rand()&0x0fff))>>4;
+			q_acc = (q_acc+(rand()&0x0fff))>>4;
 
 			// Store I/Q samples into buffer
 			iq_buff[isamp*2] = (short)i_acc;
